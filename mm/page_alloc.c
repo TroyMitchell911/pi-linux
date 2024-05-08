@@ -7456,6 +7456,7 @@ static void __meminit pgdat_init_internals(struct pglist_data *pgdat)
 
 	pgdat_page_ext_init(pgdat);
 	lruvec_init(&pgdat->__lruvec);
+	lru_gen_init_state(NULL, &pgdat->__lruvec);
 }
 
 static void __meminit zone_init_internals(struct zone *zone, enum zone_type idx, int nid,
@@ -7601,7 +7602,7 @@ static void __init alloc_node_mem_map(struct pglist_data *pgdat)
 	if (pgdat == NODE_DATA(0)) {
 		mem_map = NODE_DATA(0)->node_mem_map;
 		if (page_to_pfn(mem_map) != pgdat->node_start_pfn)
-			mem_map -= offset;
+			mem_map -= offset + (pgdat->node_start_pfn - ARCH_PFN_OFFSET);
 	}
 #endif
 }
