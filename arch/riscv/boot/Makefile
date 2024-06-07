@@ -69,6 +69,15 @@ $(obj)/Image.zst: $(obj)/Image FORCE
 $(obj)/loader.bin: $(obj)/loader FORCE
 	$(call if_changed,objcopy)
 
+quiet_cmd_itb-image = ITB     $@
+      cmd_itb-image = \
+                env PATH="$(objtree)/scripts/dtc:$(PATH)" \
+                $(BASH) $(MKIMAGE) \
+                -D "-I dts -O dtb -p 500 \
+                        --include $(objtree)/arch/riscv \
+                        --warning no-unit_address_vs_reg" \
+                -f $(2) $@
+
 EFI_ZBOOT_PAYLOAD	:= Image
 EFI_ZBOOT_BFD_TARGET	:= elf$(BITS)-littleriscv
 EFI_ZBOOT_MACH_TYPE	:= RISCV$(BITS)
