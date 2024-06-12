@@ -12,6 +12,7 @@ config 32BIT
 
 config RISCV
 	def_bool y
+	select ARCH_CLOCKSOURCE_INIT
 	select ACPI_GENERIC_GSI if ACPI
 	select ACPI_REDUCED_HARDWARE_ONLY if ACPI
 	select ARCH_DMA_DEFAULT_COHERENT
@@ -93,8 +94,8 @@ config RISCV
 	select HAVE_ARCH_HUGE_VMAP if MMU && 64BIT && !XIP_KERNEL
 	select HAVE_ARCH_JUMP_LABEL if !XIP_KERNEL
 	select HAVE_ARCH_JUMP_LABEL_RELATIVE if !XIP_KERNEL
-	select HAVE_ARCH_KASAN if MMU && 64BIT
-	select HAVE_ARCH_KASAN_VMALLOC if MMU && 64BIT
+	# select HAVE_ARCH_KASAN if MMU && 64BIT
+	# select HAVE_ARCH_KASAN_VMALLOC if MMU && 64BIT
 	select HAVE_ARCH_KFENCE if MMU && 64BIT
 	select HAVE_ARCH_KGDB if !XIP_KERNEL
 	select HAVE_ARCH_KGDB_QXFER_PKT
@@ -119,7 +120,7 @@ config RISCV
 	select HAVE_EBPF_JIT if MMU
 	select HAVE_FUNCTION_ARG_ACCESS_API
 	select HAVE_FUNCTION_ERROR_INJECTION
-	select HAVE_GCC_PLUGINS
+	# select HAVE_GCC_PLUGINS
 	select HAVE_GENERIC_VDSO if MMU && 64BIT
 	select HAVE_IRQ_TIME_ACCOUNTING
 	select HAVE_KPROBES if !XIP_KERNEL
@@ -148,6 +149,7 @@ config RISCV
 	select MODULES_USE_ELF_RELA if MODULES
 	select MODULE_SECTIONS if MODULES
 	select OF
+	# select OF_DMA_DEFAULT_COHERENT
 	select OF_EARLY_FLATTREE
 	select OF_IRQ
 	select PCI_DOMAINS_GENERIC if PCI
@@ -161,7 +163,8 @@ config RISCV
 	select THREAD_INFO_IN_TASK
 	select TRACE_IRQFLAGS_SUPPORT
 	select UACCESS_MEMCPY if !MMU
-	select ZONE_DMA32 if 64BIT
+	select ZONE_DMA32 if 64BIT && !SOC_SPACEMIT_K1PRO
+	select ARCH_SUSPEND_POSSIBLE
 
 config CLANG_SUPPORTS_DYNAMIC_FTRACE
 	def_bool CC_IS_CLANG
@@ -210,8 +213,10 @@ config MMU
 
 config PAGE_OFFSET
 	hex
-	default 0xC0000000 if 32BIT && MMU
-	default 0x80000000 if !MMU
+	# default 0xC0000000 if 32BIT && MMU
+	# default 0x80000000 if !MMU
+	default 0xC0000000 if 32BIT
+        default 0x80000000 if 64BIT && !MMU
 	default 0xff60000000000000 if 64BIT
 
 config KASAN_SHADOW_OFFSET
@@ -273,7 +278,8 @@ config RISCV_DMA_NONCOHERENT
 	select ARCH_HAS_SYNC_DMA_FOR_CPU
 	select ARCH_HAS_SYNC_DMA_FOR_DEVICE
 	select DMA_BOUNCE_UNALIGNED_KMALLOC if SWIOTLB
-	select DMA_DIRECT_REMAP if MMU
+	# select DMA_DIRECT_REMAP if MMU
+	select DMA_DIRECT_REMAP
 
 config RISCV_NONSTANDARD_CACHE_OPS
 	bool
@@ -326,11 +332,17 @@ config ARCH_RV32I
 	select GENERIC_LIB_ASHRDI3
 	select GENERIC_LIB_LSHRDI3
 	select GENERIC_LIB_UCMPDI2
+	select MMU
 
 config ARCH_RV64I
 	bool "RV64I"
 	select 64BIT
 	select ARCH_SUPPORTS_INT128 if CC_HAS_INT128
+	select HAVE_DYNAMIC_FTRACE if !XIP_KERNEL && MMU && $(cc-option,-fpatchable-function-entry=8)
+        select HAVE_DYNAMIC_FTRACE_WITH_REGS if HAVE_DYNAMIC_FTRACE
+        select HAVE_FTRACE_MCOUNT_RECORD if !XIP_KERNEL
+        select HAVE_FUNCTION_GRAPH_TRACER
+        select HAVE_FUNCTION_TRACER if !XIP_KERNEL
 	select SWIOTLB if MMU
 
 endchoice
@@ -474,7 +486,9 @@ config RISCV_ISA_SVNAPOT
 config RISCV_ISA_SVPBMT
 	bool "Svpbmt extension support for supervisor mode page-based memory types"
 	depends on 64BIT && MMU
-	depends on RISCV_ALTERNATIVE
+	# depends on RISCV_ALTERNATIVE
+	depends on !XIP_KERNEL
+        select RISCV_ALTERNATIVE
 	default y
 	help
 	   Adds support to dynamically detect the presence of the Svpbmt
@@ -531,8 +545,10 @@ config TOOLCHAIN_HAS_ZBB
 config RISCV_ISA_ZBB
 	bool "Zbb extension support for bit manipulation instructions"
 	depends on TOOLCHAIN_HAS_ZBB
-	depends on MMU
-	depends on RISCV_ALTERNATIVE
+	# depends on MMU
+	# depends on RISCV_ALTERNATIVE
+	depends on !XIP_KERNEL && MMU
+        select RISCV_ALTERNATIVE
 	default y
 	help
 	   Adds support to dynamically detect the presence of the ZBB
@@ -544,12 +560,25 @@ config RISCV_ISA_ZBB
 
 	   If you don't know what to do here, say Y.
 
+config TOOLCHAIN_HAS_ZICBOM
+        bool
+        default y
+        depends on !64BIT || $(cc-option,-mabi=lp64 -march=rv64ima_zicbom)
+        depends on !32BIT || $(cc-option,-mabi=ilp32 -march=rv32ima_zicbom)
+        depends on LLD_VERSION >= 150000 || LD_VERSION >= 23800
+
 config RISCV_ISA_ZICBOM
 	bool "Zicbom extension support for non-coherent DMA operation"
-	depends on MMU
-	depends on RISCV_ALTERNATIVE
+	# depends on MMU
+	# depends on RISCV_ALTERNATIVE
+	# default y
+	# select RISCV_DMA_NONCOHERENT
+
+	depends on TOOLCHAIN_HAS_ZICBOM
+        depends on !XIP_KERNEL && MMU
+        select RISCV_DMA_NONCOHERENT
+        select RISCV_ALTERNATIVE
 	default y
-	select RISCV_DMA_NONCOHERENT
 	help
 	   Adds support to dynamically detect the presence of the ZICBOM
 	   extension (Cache Block Management Operations) and enable its
@@ -560,11 +589,39 @@ config RISCV_ISA_ZICBOM
 
 	   If you don't know what to do here, say Y.
 
+config TOOLCHAIN_HAS_ZICBOP
+        bool
+        default y
+        depends on !64BIT || $(cc-option,-mabi=lp64 -march=rv64ima_zicbop)
+        depends on !32BIT || $(cc-option,-mabi=ilp32 -march=rv32ima_zicbop)
+        depends on LLD_VERSION >= 150000 || LD_VERSION >= 23800
+
+config RISCV_ISA_ZICBOP
+        bool "Zicboz extension support"
+        depends on TOOLCHAIN_HAS_ZICBOP
+        depends on !XIP_KERNEL && MMU
+        default y
+        help
+           Adds support to dynamically detect the presence of the ZICBOP
+           extension and enable its usage.
+
+           If you don't know what to do here, say Y.
+
+config TOOLCHAIN_HAS_ZICBOZ
+        bool
+        default y
+        depends on !64BIT || $(cc-option,-mabi=lp64 -march=rv64ima_zicboz)
+        depends on !32BIT || $(cc-option,-mabi=ilp32 -march=rv32ima_zicboz)
+        depends on LLD_VERSION >= 150000 || LD_VERSION >= 23800
+
 config RISCV_ISA_ZICBOZ
 	bool "Zicboz extension support for faster zeroing of memory"
-	depends on MMU
-	depends on RISCV_ALTERNATIVE
-	default y
+	# depends on MMU
+	# depends on RISCV_ALTERNATIVE
+	# default y
+	depends on TOOLCHAIN_HAS_ZICBOZ
+        depends on !XIP_KERNEL && MMU
+        default y
 	help
 	   Enable the use of the Zicboz extension (cbo.zero instruction)
 	   when available.
@@ -668,6 +725,49 @@ config RISCV_BOOT_SPINWAIT
 	  hart to enter Linux.
 
 	  If unsure what to do here, say N.
+
+config KEXEC
+        bool "Kexec system call"
+        select KEXEC_CORE
+        select HOTPLUG_CPU if SMP
+        depends on MMU
+        help
+          kexec is a system call that implements the ability to shutdown your
+          current kernel, and to start another kernel. It is like a reboot
+          but it is independent of the system firmware. And like a reboot
+          you can start any kernel with it, not just Linux.
+
+          The name comes from the similarity to the exec system call.
+
+config KEXEC_FILE
+        bool "kexec file based systmem call"
+        select KEXEC_CORE
+        select KEXEC_ELF
+        select HAVE_IMA_KEXEC if IMA
+        depends on 64BIT && MMU
+        help
+          This is new version of kexec system call. This system call is
+          file based and takes file descriptors as system call argument
+          for kernel and initramfs as opposed to list of segments as
+          accepted by previous system call.
+
+          If you don't know what to do here, say Y.
+
+config ARCH_HAS_KEXEC_PURGATORY
+        def_bool KEXEC_FILE
+        depends on CRYPTO=y
+        depends on CRYPTO_SHA256=y
+
+config CRASH_DUMP
+        bool "Build kdump crash kernel"
+        help
+          Generate crash dump after being started by kexec. This should
+          be normally only set in special crash dump kernels which are
+          loaded in the main kernel with kexec-tools into a specially
+          reserved region and then later executed after a crash by
+          kdump/kexec.
+
+          For more details see Documentation/admin-guide/kdump/kdump.rst
 
 config ARCH_SUPPORTS_KEXEC
 	def_bool MMU
@@ -900,6 +1000,14 @@ config PORTABLE
 	select MMU
 	select OF
 
+config IMAGE_LOAD_OFFSET
+        hex "Image load offset from start of RAM when load kernel to RAM"
+        default 0x400000 if 32BIT
+        default 0x200000 if 64BIT
+        help
+          This is the RAM offset from start of ram. Bootloader would use
+          this offset to load kernel image to ram.
+
 menu "Power management options"
 
 source "kernel/power/Kconfig"
@@ -914,6 +1022,7 @@ config ARCH_HIBERNATION_HEADER
 	def_bool HIBERNATION
 
 config ARCH_SUSPEND_POSSIBLE
+	depends on SOC_SPACEMIT
 	def_bool y
 
 endmenu # "Power management options"
