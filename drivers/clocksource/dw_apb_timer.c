@@ -101,9 +101,10 @@ static irqreturn_t dw_apb_clockevent_irq(int irq, void *data)
 		pr_info("Spurious APBT timer interrupt %d\n", irq);
 		return IRQ_NONE;
 	}
-
+	raw_spin_lock(&dw_ced->timer_lock);
 	if (dw_ced->eoi)
 		dw_ced->eoi(&dw_ced->timer);
+	raw_spin_unlock(&dw_ced->timer_lock);
 
 	evt->event_handler(evt);
 	return IRQ_HANDLED;
@@ -206,6 +207,8 @@ static int apbt_next_event(unsigned long delta,
 {
 	u32 ctrl;
 	struct dw_apb_clock_event_device *dw_ced = ced_to_dw_apb_ced(evt);
+	
+	raw_spin_lock(&dw_ced->timer_lock);
 
 	/* Disable timer */
 	ctrl = apbt_readl_relaxed(&dw_ced->timer, APBTMR_N_CONTROL);
@@ -215,6 +218,8 @@ static int apbt_next_event(unsigned long delta,
 	apbt_writel_relaxed(&dw_ced->timer, delta, APBTMR_N_LOAD_COUNT);
 	ctrl |= APBTMR_CONTROL_ENABLE;
 	apbt_writel_relaxed(&dw_ced->timer, ctrl, APBTMR_N_CONTROL);
+	
+	raw_spin_unlock(&dw_ced->timer_lock);
 
 	return 0;
 }
@@ -248,6 +253,8 @@ dw_apb_clockevent_init(int cpu, const char *name, unsigned rating,
 	if (!dw_ced)
 		return NULL;
 
+	raw_spin_lock_init(&dw_ced->timer_lock);
+
 	dw_ced->timer.base = base;
 	dw_ced->timer.irq = irq;
 	dw_ced->timer.freq = freq;
@@ -272,9 +279,11 @@ dw_apb_clockevent_init(int cpu, const char *name, unsigned rating,
 	dw_ced->ced.name = name;
 
 	dw_ced->eoi = apbt_eoi;
-	err = request_irq(irq, dw_apb_clockevent_irq,
+	/* err = request_irq(irq, dw_apb_clockevent_irq,
 			  IRQF_TIMER | IRQF_IRQPOLL | IRQF_NOBALANCING,
-			  dw_ced->ced.name, &dw_ced->ced);
+			  dw_ced->ced.name, &dw_ced->ced); */
+	err = request_irq(irq, dw_apb_clockevent_irq, IRQF_ONESHOT,
+			dw_ced->ced.name, &dw_ced->ced);
 	if (err) {
 		pr_err("failed to request timer irq\n");
 		kfree(dw_ced);
