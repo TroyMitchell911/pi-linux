@@ -17,6 +17,7 @@
 	compatible = "spacemit,k1-x";
 	#address-cells = <2>;
 	#size-cells = <2>;
+	dma-noncoherent;
 
 	aliases {
 		serial0 = &uart0;
@@ -45,8 +46,9 @@
 			model = "Spacemit(R) X60";
 			reg = <0>;
 			status = "okay";
-			riscv,isa = "rv64imafdcvsu_zicsr_zifencei_zicbom_zicboz_zicbop_zihintpause_zba_zbb_zbc_zbs_svpbmt_sstc_sscofpmf";
+			riscv,isa = "rv64imafdcv_zicsr_zifencei_zicbom_zicbop_zihintpause_zicond_zba_zbb_zbc_zbs_svpbmt_sstc_sscofpmf";
 			riscv,cbom-block-size = <64>;
+			riscv,cbop-block-size = <64>;
 			i-cache-block-size = <64>;
 			i-cache-size = <32768>;
 			i-cache-sets = <512>;
@@ -73,8 +75,9 @@
 			status = "okay";
 			compatible = "riscv";
 			model = "Spacemit(R) X60";
-			riscv,isa = "rv64imafdcvsu_zicsr_zifencei_zicbom_zicboz_zicbop_zihintpause_zba_zbb_zbc_zbs_svpbmt_sstc_sscofpmf";
+			riscv,isa = "rv64imafdcv_zicsr_zifencei_zicbom_zicbop_zihintpause_zicond_zba_zbb_zbc_zbs_svpbmt_sstc_sscofpmf";
 			riscv,cbom-block-size = <64>;
+			riscv,cbop-block-size = <64>;
 			i-cache-block-size = <64>;
 			i-cache-size = <32768>;
 			i-cache-sets = <512>;
@@ -101,8 +104,9 @@
 			status = "okay";
 			compatible = "riscv";
 			model = "Spacemit(R) X60";
-			riscv,isa = "rv64imafdcvsu_zicsr_zifencei_zicbom_zicboz_zicbop_zihintpause_zba_zbb_zbc_zbs_svpbmt_sstc_sscofpmf";
+			riscv,isa = "rv64imafdcv_zicsr_zifencei_zicbom_zicbop_zihintpause_zicond_zba_zbb_zbc_zbs_svpbmt_sstc_sscofpmf";
 			riscv,cbom-block-size = <64>;
+			riscv,cbop-block-size = <64>;
 			i-cache-block-size = <64>;
 			i-cache-size = <32768>;
 			i-cache-sets = <512>;
@@ -129,8 +133,9 @@
 			status = "okay";
 			compatible = "riscv";
 			model = "Spacemit(R) X60";
-			riscv,isa = "rv64imafdcvsu_zicsr_zifencei_zicbom_zicboz_zicbop_zihintpause_zba_zbb_zbc_zbs_svpbmt_sstc_sscofpmf";
+			riscv,isa = "rv64imafdcv_zicsr_zifencei_zicbom_zicbop_zihintpause_zicond_zba_zbb_zbc_zbs_svpbmt_sstc_sscofpmf";
 			riscv,cbom-block-size = <64>;
+			riscv,cbop-block-size = <64>;
 			i-cache-block-size = <64>;
 			i-cache-size = <32768>;
 			i-cache-sets = <512>;
@@ -157,8 +162,9 @@
 			status = "okay";
 			compatible = "riscv";
 			model = "Spacemit(R) X60";
-			riscv,isa = "rv64imafdcvsu_zicsr_zifencei_zicbom_zicboz_zicbop_zihintpause_zba_zbb_zbc_zbs_svpbmt_sstc_sscofpmf";
+			riscv,isa = "rv64imafdcv_zicsr_zifencei_zicbom_zicbop_zihintpause_zicond_zba_zbb_zbc_zbs_svpbmt_sstc_sscofpmf";
 			riscv,cbom-block-size = <64>;
+			riscv,cbop-block-size = <64>;
 			i-cache-block-size = <64>;
 			i-cache-size = <32768>;
 			i-cache-sets = <512>;
@@ -185,8 +191,9 @@
 			status = "okay";
 			compatible = "riscv";
 			model = "Spacemit(R) X60";
-			riscv,isa = "rv64imafdcvsu_zicsr_zifencei_zicbom_zicboz_zicbop_zihintpause_zba_zbb_zbc_zbs_svpbmt_sstc_sscofpmf";
+			riscv,isa = "rv64imafdcv_zicsr_zifencei_zicbom_zicbop_zihintpause_zicond_zba_zbb_zbc_zbs_svpbmt_sstc_sscofpmf";
 			riscv,cbom-block-size = <64>;
+			riscv,cbop-block-size = <64>;
 			i-cache-block-size = <64>;
 			i-cache-size = <32768>;
 			i-cache-sets = <512>;
@@ -213,8 +220,9 @@
 			status = "okay";
 			compatible = "riscv";
 			model = "Spacemit(R) X60";
-			riscv,isa = "rv64imafdcvsu_zicsr_zifencei_zicbom_zicboz_zicbop_zihintpause_zba_zbb_zbc_zbs_svpbmt_sstc_sscofpmf";
+			riscv,isa = "rv64imafdcv_zicsr_zifencei_zicbom_zicbop_zihintpause_zicond_zba_zbb_zbc_zbs_svpbmt_sstc_sscofpmf";
 			riscv,cbom-block-size = <64>;
+			riscv,cbop-block-size = <64>;
 			i-cache-block-size = <64>;
 			i-cache-size = <32768>;
 			i-cache-sets = <512>;
@@ -241,8 +249,9 @@
 			status = "okay";
 			compatible = "riscv";
 			model = "Spacemit(R) X60";
-			riscv,isa = "rv64imafdcvsu_zicsr_zifencei_zicbom_zicboz_zicbop_zihintpause_zba_zbb_zbc_zbs_svpbmt_sstc_sscofpmf";
+			riscv,isa = "rv64imafdcv_zicsr_zifencei_zicbom_zicbop_zihintpause_zicond_zba_zbb_zbc_zbs_svpbmt_sstc_sscofpmf";
 			riscv,cbom-block-size = <64>;
+			riscv,cbop-block-size = <64>;
 			i-cache-block-size = <64>;
 			i-cache-size = <32768>;
 			i-cache-sets = <512>;
@@ -465,21 +474,10 @@
 		#size-cells = <2>;
 		ranges;
 
-		area_reserved@80000000 {
-			/* dram area is 0~2GB, and 4GB~, the 2GB~4GB is io area */
-			reg = <0x0 0x80000000 0x0 0x40800000>;
-		};
-
 		/* sram area, used for rcpu code & data & heap space */
 		rcpu_mem_0: mem@c0800000 {
 			reg = <0x0 0xc0800000 0x0 0x40000>;
 			da_base = <0x0>;
-			no-map;
-		};
-
-		area_reserved@c0840000 {
-			/* dram area is 0~2GB, and 4GB~, the 2GB~4GB is io area */
-			reg = <0x0 0xc0840000 0x0 0x3f7c0000>;
 			no-map;
 		};
 
@@ -784,154 +782,98 @@
 			reg = <0x0 0xd4017000 0x0 0x100>;
 			interrupt-parent = <&intc>;
 			interrupts = <42>;
-			clocks = <&ccu CLK_UART1>, <&ccu CLK_SLOW_UART>;
 			clock-names = "func", "gate";
-			clk-fpga = <14750000>;
-			resets = <&reset RESET_UART1>;
-			power-domains = <&power K1X_PMU_BUS_PWR_DOMAIN>;
-			clk,pm-runtime,no-sleep;
-			cpuidle,pm-runtime,sleep;
-			dmas = <&pdma0 DMA_UART0_RX 1
-				&pdma0 DMA_UART0_TX 1>;
-			dma-names = "rx", "tx";
-			interconnects = <&dram_range0>;
-			interconnect-names = "dma-mem";
+			clocks = <&ccu CLK_UART1>, <&ccu CLK_SLOW_UART>;
+			reg-shift = <2>;
+			reg-io-width = <4>;
 			status = "ok";
 		};
 
 		uart2: uart@d4017100 {
-			compatible = "spacemit,pxa-uart";
+			compatible = "ns16550";
 			reg = <0x0 0xd4017100 0x0 0x100>;
 			interrupt-parent = <&intc>;
 			interrupts = <44>;
-			clocks = <&ccu CLK_UART2>, <&ccu CLK_SLOW_UART>;
-			clock-names = "func", "gate";
-			clk-fpga = <14750000>;
-			resets = <&reset RESET_UART2>;
-			power-domains = <&power K1X_PMU_BUS_PWR_DOMAIN>;
-			clk,pm-runtime,no-sleep;
-			cpuidle,pm-runtime,sleep;
-			interconnects = <&dram_range0>;
-			interconnect-names = "dma-mem";
+			clocks = <&ccu CLK_UART2>;
+			reg-shift = <2>;
+			reg-io-width = <4>;
 			status = "disabled";
 		};
 
 		uart3: uart@d4017200 {
-			compatible = "spcaemit,pxa-uart";
+			compatible = "ns16550";
 			reg = <0x0 0xd4017200 0x0 0x100>;
 			interrupt-parent = <&intc>;
 			interrupts = <45>;
-			clocks = <&ccu CLK_UART3>, <&ccu CLK_SLOW_UART>;
-			clock-names = "func", "gate";
-			clk-fpga = <14750000>;
-			resets = <&reset RESET_UART3>;
-			power-domains = <&power K1X_PMU_BUS_PWR_DOMAIN>;
-			clk,pm-runtime,no-sleep;
-			cpuidle,pm-runtime,sleep;
-			interconnects = <&dram_range0>;
-			interconnect-names = "dma-mem";
+			clocks = <&ccu CLK_UART3>;
+			reg-shift = <2>;
+			reg-io-width = <4>;
 			status = "disabled";
 		};
 
 		uart4: uart@d4017300 {
-			compatible = "spacemit,pxa-uart";
+			compatible = "ns16550";
 			interrupt-parent = <&intc>;
 			reg = <0x0 0xd4017300 0x0 0x100>;
 			interrupts = <46>;
-			clocks = <&ccu CLK_UART4>, <&ccu CLK_SLOW_UART>;
-			clock-names = "func", "gate";
-			clk-fpga = <14750000>;
-			resets = <&reset RESET_UART4>;
-			power-domains = <&power K1X_PMU_BUS_PWR_DOMAIN>;
-			clk,pm-runtime,no-sleep;
-			cpuidle,pm-runtime,sleep;
-			interconnects = <&dram_range0>;
-			interconnect-names = "dma-mem";
+			clocks = <&ccu CLK_UART4>;
+			reg-shift = <2>;
+			reg-io-width = <4>;
 			status = "disabled";
 		};
 
 		uart5: uart@d4017400 {
-			compatible = "spacemit,pxa-uart";
+			compatible = "ns16550";
 			interrupt-parent = <&intc>;
 			reg = <0x0 0xd4017400 0x0 0x100>;
 			interrupts = <47>;
-			clocks = <&ccu CLK_UART5>, <&ccu CLK_SLOW_UART>;
-			clock-names = "func", "gate";
-			clk-fpga = <14750000>;
-			resets = <&reset RESET_UART5>;
-			power-domains = <&power K1X_PMU_BUS_PWR_DOMAIN>;
-			clk,pm-runtime,no-sleep;
-			cpuidle,pm-runtime,sleep;
-			interconnects = <&dram_range0>;
-			interconnect-names = "dma-mem";
+			clocks = <&ccu CLK_UART5>;
+			reg-shift = <2>;
+			reg-io-width = <4>;
 			status = "disabled";
 		};
 
 		uart6: uart@d4017500 {
-			compatible = "spacemit,pxa-uart";
+			compatible = "ns16550";
 			interrupt-parent = <&intc>;
 			reg = <0x0 0xd4017500 0x0 0x100>;
 			interrupts = <48>;
-			clocks = <&ccu CLK_UART6>, <&ccu CLK_SLOW_UART>;
-			clock-names = "func", "gate";
-			clk-fpga = <14750000>;
-			resets = <&reset RESET_UART6>;
-			power-domains = <&power K1X_PMU_BUS_PWR_DOMAIN>;
-			clk,pm-runtime,no-sleep;
-			cpuidle,pm-runtime,sleep;
-			interconnects = <&dram_range0>;
-			interconnect-names = "dma-mem";
+			clocks = <&ccu CLK_UART6>;
+			reg-shift = <2>;
+			reg-io-width = <4>;
 			status = "disabled";
 		};
 
 		uart7: uart@d4017600 {
-			compatible = "spacemit,pxa-uart";
+			compatible = "ns16550";
 			interrupt-parent = <&intc>;
 			reg = <0x0 0xd4017600 0x0 0x100>;
 			interrupts = <49>;
-			clocks = <&ccu CLK_UART7>, <&ccu CLK_SLOW_UART>;
-			clock-names = "func", "gate";
-			clk-fpga = <14750000>;
-			resets = <&reset RESET_UART7>;
-			power-domains = <&power K1X_PMU_BUS_PWR_DOMAIN>;
-			clk,pm-runtime,no-sleep;
-			cpuidle,pm-runtime,sleep;
-			interconnects = <&dram_range0>;
-			interconnect-names = "dma-mem";
+			clocks = <&ccu CLK_UART7>;
+			reg-shift = <2>;
+			reg-io-width = <4>;
 			status = "disabled";
 		};
 
 		uart8: uart@d4017700 {
-			compatible = "spacemit,pxa-uart";
+			compatible = "ns16550";
 			interrupt-parent = <&intc>;
 			reg = <0x0 0xd4017700 0x0 0x100>;
 			interrupts = <50>;
-			clocks = <&ccu CLK_UART8>, <&ccu CLK_SLOW_UART>;
-			clock-names = "func", "gate";
-			clk-fpga = <14750000>;
-			resets = <&reset RESET_UART8>;
-			power-domains = <&power K1X_PMU_BUS_PWR_DOMAIN>;
-			clk,pm-runtime,no-sleep;
-			cpuidle,pm-runtime,sleep;
-			interconnects = <&dram_range0>;
-			interconnect-names = "dma-mem";
+			clocks = <&ccu CLK_UART8>;
+			reg-shift = <2>;
+			reg-io-width = <4>;
 			status = "disabled";
 		};
 
 		uart9: uart@d4017800 {
-			compatible = "spacemit,pxa-uart";
+			compatible = "ns16550";
 			interrupt-parent = <&intc>;
 			reg = <0x0 0xd4017800 0x0 0x100>;
 			interrupts = <51>;
-			clocks = <&ccu CLK_UART9>, <&ccu CLK_SLOW_UART>;
-			clock-names = "func", "gate";
-			clk-fpga = <14750000>;
-			resets = <&reset RESET_UART9>;
-			power-domains = <&power K1X_PMU_BUS_PWR_DOMAIN>;
-			clk,pm-runtime,no-sleep;
-			cpuidle,pm-runtime,sleep;
-			interconnects = <&dram_range0>;
-			interconnect-names = "dma-mem";
+			clocks = <&ccu CLK_UART9>;
+			reg-shift = <2>;
+			reg-io-width = <4>;
 			status = "disabled";
 		};
 

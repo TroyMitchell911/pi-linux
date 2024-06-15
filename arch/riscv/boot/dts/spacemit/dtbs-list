@@ -1,0 +1,9 @@
+arch/riscv/boot/dts/spacemit/k1-x_evb.dtb
+arch/riscv/boot/dts/spacemit/k1-x_deb2.dtb
+arch/riscv/boot/dts/spacemit/k1-x_deb1.dtb
+arch/riscv/boot/dts/spacemit/k1-x_hs450.dtb
+arch/riscv/boot/dts/spacemit/k1-x_kx312.dtb
+arch/riscv/boot/dts/spacemit/k1-x_MINI-PC.dtb
+arch/riscv/boot/dts/spacemit/k1-x_mingo.dtb
+arch/riscv/boot/dts/spacemit/k1-x_MUSE-N1.dtb
+arch/riscv/boot/dts/spacemit/k1-x_MUSE-Pi.dtb
